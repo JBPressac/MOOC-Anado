@@ -2,11 +2,12 @@
 # questionr (Fonctions utiles à l'usage de R en SHS. Détails sur www.rdocumentation.org)
 # Rcmdr (Interface graphique)
 # FactoMineR (Dédié à l'analyse multidimensionnelle de données)
-# RcmdrPlugin.FactoMineR (Plugin deFactoMineR pour l'interface graphique Rcmdr)
+# RcmdrPlugin.FactoMineR (Plugin de FactoMineR pour l'interface graphique Rcmdr)
 library (questionr)
-library (Rcmdr)
+# library (Rcmdr)
 library (FactoMineR)
-library (RcmdrPlugin.FactoMineR)
+# library (RcmdrPlugin.FactoMineR)
+library(explor)
 
 
 # Voir plus tard quant à des graphes interactifs avec Factoshiny ou Explor
@@ -20,7 +21,7 @@ getwd()
 
 
 # Importation du jeu de données :
-# À partir des données d'Eurostat, on a construit un tableau de données croisant en lignesles 29 pays de
+# À partir des données d'Eurostat, on a construit un tableau de données croisant en lignes les 29 pays de
 # l'UE et en colonnes 16 branches d'emplois. Dans une case de ce tableau, on retrouve le nombre d'emplois
 # pour un pays et une branche d'emplois.
 don <- read.table("AnaDo_JeuDonnees_UEemploi.csv", header=TRUE, row.names=1, sep=";", fileEncoding="latin1")
@@ -51,7 +52,10 @@ chisq.test(don) -> khi2don
 # La valeur de l'indicateur de khi2 est "34087000". Le nombre de degré de liberté est "420". La probabilité
 # d'observer une valeur du khi2 de 34087000 pour 420 degré de liberté est infinitésimale : p-value < 2.2e-16.
 # Dit autrement, cela veur dire que la probabilité d'obtenir le tableau croisé sous l'hypothèse
-# d'indépendance (H0) des 2 variables est d'environ 2,2x10^-16 (0,00000000000000022).
+# d'indépendance (H0) des 2 variables est d'environ 2,2x10^-16 (0,0000000000000022).
+# Remarque : 10^-16 = 0.0000000000000001 (16 zéros avant le 1)
+# 2,2x10^-16 = 0,0000000000000022 (15 zéros avant le premier 2)
+# Source : http://www.ac-grenoble.fr/disciplines/spc/file/accompa/conversions/co/module_conversions_1.html
 # On rejette donc l'hypothèse d'indépendance entre les 2 variables. En général on accepte l'hypothèse
 # d'indépendance lorsque p-value est supérieure à 5 % (0,05).
 
@@ -68,7 +72,7 @@ khi2don$observed
 # avoir eu envie de le demander", (https://alea.fr.eu.org/pages/khi2)
 khi2don$expected
 # Afficher le tableau des résidus (sens des écarts à l'indépendance)
-# Un résidu positif signifie que les effectifs dans la case sont supérieur à ceux attendus sous l'hypothèse
+# Un résidu positif signifie que les effectifs dans la case sont supérieurs à ceux attendus sous l'hypothèse
 # d'indépendance. Et l'inverse pour un résidu négatif.
 khi2don$residuals
 
@@ -80,6 +84,10 @@ cramer.v(don)
 
 # L'AFC : les sorties et le graphe par défaut
 res.ca <- CA(don)
+
+# Pour affichage interactif avec le package explor de Julien Barnier
+explor(res.ca)
+
 # Question : EN AFC on a deux nuages de points, celui des lignes et celui des colonnes.
 # Dans ce cas, quelles inerties permet d'afficher la commande suivante : Celle des 2 nuages ?
 
