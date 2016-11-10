@@ -8,6 +8,7 @@ library (questionr)
 library (FactoMineR)
 # library (RcmdrPlugin.FactoMineR)
 library(explor)
+# pour test de dépôt sur Github
 
 
 # Voir plus tard quant à des graphes interactifs avec Factoshiny ou Explor
